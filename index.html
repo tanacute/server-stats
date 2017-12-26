@@ -1,0 +1,104 @@
+<!-- 
+Author: Tanveer Iqbal
+Project : Server Stats
+CR#
+Date: 3-March-2017
+-->
+<!doctype html>
+<html lang="en">
+    <head>
+    	<title>Live Server Monitoring Tool</title>
+		<link rel="icon" type="image/png" sizes="96x96" href="favicon.png">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="css/skyprofiler.css">
+        <script src="js/justgage.js"></script>
+        <script src="js/nirvana.js"></script>
+        <script src="js/raphael-2.1.4.min.js"></script>
+        <script src="js/server-monito-1.0.js"></script>
+        <script src="js/serverProperties.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	  <style>
+	  	#g1,
+	  	#g2,
+	  	#g3 {
+	  		width: 200px;
+	  		height: 160px;
+	  		display: inline-block;
+	  		margin: 1em;
+	  	}
+
+	  	p {
+	  		display: block;
+	  		width: 450px;
+	  		margin: 2em auto;
+	  		text-align: left;
+	  	}
+	  </style>
+	</head>
+	<body onload="initUMUrl()">
+		<div ng-app="myApp" ng-controller="myCtrl">
+             <div class="vertical-center">
+              <div class="container text-center">
+                <div class="skyprofile-title">
+                    <span class="welcome">Welcome to </span>Live Sever Stats
+                </div>
+
+		       <p style="text-align: center;">
+                    <button id="start" ng-if="!isRunning" ng-model="start" title="To start monitoring server click on this button. server-stats will be started with default configuration." type="button" ng-click="doStart(null, $event)" class="btn btn-lg btn-primary" onclick="sendAction('start')" ><i class="glyphicon glyphicon-play"></i> Start</button>
+
+                    <button id="stop" ng-if="isRunning" title="SKY Profiler is already running." type="button" ng-click="doStop(null, $event)" class="btn btn-lg btn-success" onclick="sendAction('stop')"><i class="glyphicon glyphicon-stop"></i> Stop</button>
+
+                    <button id="configuration" title="To configure the profiler before starting the profiling click on this button." type="button" class="btn btn-lg btn-default" ng-click="openConfigModal()"><i class="glyphicon glyphicon-cog"></i> Configure</button>
+                </p>
+               </div>
+              </div>
+		</div>
+
+<!--  Render Charts for stats  -->
+	 <div align="center">
+		<div id="g1"></div>
+		<div id="g2"></div>
+		<div id="g3"></div>
+		<div id="g4"></div>
+	  
+		<div><a href="JavaScript:popupwindow('/server-stats/configTask.html',500,300);"><i class="glyphicon glyphicon-cog"></i> Configuration</a></div>
+		<a href="/server-stats/report.html" target="_blank"><i class="glyphicon glyphicon-tasks"></i>Show Report</a>
+	 </div>
+	</body>
+	
+<script type="text/javascript">
+// function for opening new window
+	
+	function popupwindow(url, w, h) {
+         var w = w;
+         var h = h;
+        var left = Number((screen.width/2)-(w/2));
+        var tops = Number((screen.height/2)-(h/2));
+
+        window.open(url, '', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+tops+', left='+left);
+     }
+
+	function initUMUrl(){
+		var realmURL = Server.um;
+		// Save data to sessionStorage
+        localStorage.setItem('realmURL', realmURL);
+	}
+</script>
+
+<script type="text/javascript">
+	var app = angular.module("myApp", []);
+	app.controller("myCtrl", function($scope) {
+
+	  $scope.isRunning=false;
+
+    $scope.doStart = function(item, event) {
+         $scope.isRunning=true;
+   };
+
+    $scope.doStop = function(item, event) {
+     $scope.isRunning=false;
+    };
+});
+</script>
+<script src="js/ti.stats.chart.js"></script>
+</html>

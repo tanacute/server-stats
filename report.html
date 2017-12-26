@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+ 
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.4/sweetalert2.min.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="css/ti-server-monitor.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.4/sweetalert2.min.js"></script>
+</head>
+<body onload="showFiles()">
+<div>
+<select id="dropdown"></select>
+</div>
+	
+<div>
+	<!--<button onclick="genrateReport()" value="Show Report">Show Report</button> -->
+	<div>
+     <div id="serviceVolumesNoData" style="display:none">No Memory Data Availlable</div>
+     <div id="serviceVolumesChartContainer"></div>
+    </div>
+	
+<br><br>
+<div id="interfaceInstanceMetricsNoData">No Chart Data</div>
+<div id="interfaceInstanceMetricsChartContainer"></div>
+</div>
+  
+</body>
+<script src="js/fusioncharts.js"></script>
+<script src="js/moment.min.js"></script>
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/serverProperties.js"></script>
+<script src="js/server-stats.ti.js"></script>
+
+<script>
+	
+	function genrateReport(){
+	   var filename = $('#dropdown').val();
+       var URL = "http://"+Server.IS+"/rest/TI_ServerStats/pub/restful/report/ServerUsedMemory/?filename="+filename+"";
+	   var URL_d = "http://"+Server.IS+"/rest/TI_ServerStats/pub/restful/report/Threads/?filename="+filename+"";
+       serverStats.getServerMemoryStats_v1(URL);
+	   serverStats.getSysThreadsAndSessions(URL_d);
+
+   } 
+	// Call this function while loading page. It will show latest reports and fetch all previous reports.
+
+	   function showFiles(){
+	   var URL = "http://"+Server.IS+"/rest/TI_ServerStats/pub/restful/report/ServerUsedMemory/";
+	   var URL_d = "http://"+Server.IS+"/rest/TI_ServerStats/pub/restful/report/Threads/";
+	   var URL_listFile = "http://"+Server.IS+"/rest/TI_ServerStats/pub/restful/report/";
+	   serverStats.getServerMemoryStats_v1(URL);
+	   serverStats.getSysThreadsAndSessions(URL_d);
+	   serverStats.listReports(URL_listFile);
+
+	}
+
+ 
+ //This event is triggered when file is selected from drop-down
+
+	$( "#dropdown" ).change(function() {   
+       genrateReport();                       
+    });
+ 
+</script>
+
+	
+</html>

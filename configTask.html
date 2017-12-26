@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.4/sweetalert2.min.css" rel="stylesheet" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.4/sweetalert2.min.js"></script>
+	<script src="js/server-stats.ti.js"></script>
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script type="js/serverProperties.js"></script>
+</head>
+<body align="center">
+<div id="form">
+ <form>
+	  <input type="text" id="interval" placeholder="Interval in second" autocomplete="off" required="false"/>
+	  <label>Default is 3 seconds</label>
+   <button type="button" onclick="configTask()">Submit</button>
+ </form>
+</div>
+</body>
+
+<script>
+	function configTask(){
+		$('#form').hide();
+		var URL = "http://"+Server.IS+"/rest/TI_ServerStats/pub/restful/config/task/";
+		var interval = $('#interval').val();
+		var input = {interval:interval};
+		serverStats.configTask(input,URL,method); 
+	}
+</script>
+</html>
